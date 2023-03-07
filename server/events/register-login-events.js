@@ -1,5 +1,5 @@
 import { findUser } from '../database/usersDb.js';
-import { authenticate } from '../auth/auth.js'
+import { authenticate } from '../auth/auth.js';
 import { generateJwt } from '../auth/generateJwt.js';
 
 /**
@@ -11,17 +11,15 @@ export function registerLoginEvents(socket, io) {
     const dbUser = await findUser(user);
 
     if (dbUser) {
-      const { jwtToken } = generateJwt({username: user});
+      const { jwtToken } = generateJwt({ username: user });
       const authenticatedUser = authenticate(dbUser, password);
       if (authenticatedUser) {
-        socket.emit('auth:success', jwtToken)
+        socket.emit('auth:success', jwtToken);
       } else {
-        socket.emit('auth:error')
+        socket.emit('auth:error');
       }
     } else {
-      socket.emit('user:not-found')
+      socket.emit('user:not-found');
     }
-
-   
   });
 }

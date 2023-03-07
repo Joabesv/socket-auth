@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { mountEventsOnPageStartup } from './events/mount-events-on-page-startup.js';
 import { registerDocumentEvents } from './events/register-document-events.js';
 import { registerLoginEvents } from './events/register-login-events.js';
