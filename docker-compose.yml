@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  database:
+    image: mongo
+    container_name: socket-auth
+    restart: always
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=joabe
+      - MONGO_INITDB_ROOT_PASSWORD=vamoPegarPorFavor
+    volumes:
+      - database:/data/mongodb
+    ports:
+      - '27017:27017'
+volumes:
+  database: 
