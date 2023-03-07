@@ -4,31 +4,32 @@ import {
   updateDocument,
   findDocument,
   removeDocument,
-} from "./db/documentosDb.js";
-import io from "./servidor.js";
+} from './db/documentsDb.js';
+import { socketServer } from './server.js';
 
-io.on("connection", (socket) => {
-  socket.on("document:get", async (returnDocuments) => {
+socketServer.on('connection', (socket) => {
+  socket.on('document:get', async (returnDocuments) => {
     const documentos = await getDocuments();
 
     returnDocuments(documentos);
   });
 
-  socket.on("document:add", async (name) => {
-    const isDocument = (await findDocument(name)) !== null;
+  socket.on('document:add', async (name) => {
+    const documents = await findDocument(name)
+    const isDocument = documents !== null;
 
     if (isDocument) {
-      socket.emit("document:exist", name);
+      socket.emit('document:exist', name);
     } else {
       const result = await addDocument(name);
 
       if (result.acknowledged) {
-        io.emit("document:add-client", name);
+        socketServer.emit('document:add-client', name);
       }
     }
   });
 
-  socket.on("document:select", async (documentName, returnText) => {
+  socket.on('document:select', async (documentName, returnText) => {
     socket.join(documentName);
 
     const document = await findDocument(documentName);
@@ -38,19 +39,19 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("editor:text", async ({ text, documentName }) => {
+  socket.on('editor:text', async ({ text, documentName }) => {
     const updated = await updateDocument(documentName, text);
 
     if (updated.modifiedCount) {
-      socket.to(documentName).emit("editor:text-rooms", text);
+      socket.to(documentName).emit('editor:text-rooms', text);
     }
   });
 
-  socket.on("document:remove", async (name) => {
+  socket.on('document:remove', async (name) => {
     const result = await removeDocument();
 
     if (result.deletedCount) {
-      io.emit("document:remove-success", name);
+      socketServer.emit('document:remove-success', name);
     }
   });
 });

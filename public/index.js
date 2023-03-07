@@ -1,31 +1,31 @@
-import { emitiraddDocument } from "./socket-front-index.js";
+import { emitAddDocument } from './socket-front-index.js';
 
-const listaDocumentos = document.getElementById("lista-documentos");
-const form = document.getElementById("form-adiciona-documento");
-const inputDocumento = document.getElementById("input-documento");
+const documentList = document.getElementById('lista-documentos');
+const form = document.getElementById('form-adiciona-documento');
+const documentInput = document.getElementById('input-documento');
 
-form.addEventListener("submit", (evento) => {
-  evento.preventDefault();
-  emitiraddDocument(inputDocumento.value);
-  inputDocumento.value = "";
+form.addEventListener('submit', (event) => {
+  event.preventDefault();
+  emitAddDocument(documentInput.value);
+  documentInput.value = '';
 });
 
-function inserirLinkDocumento(nomeDocumento) {
-  listaDocumentos.innerHTML += `
+function insertDocumentLink(documentName) {
+  documentList.innerHTML += `
     <a
-      href="/documento/index.html?nome=${nomeDocumento}"
+      href="/documento/index.html?nome=${documentName}"
       class="list-group-item list-group-item-action"
-      id="documento-${nomeDocumento}"
+      id="documento-${documentName}"
     >
-      ${nomeDocumento}
+      ${documentName}
     </a>
   `;
 }
 
-function removerLinkDocumento(nomeDocumento) {
-  const documento = document.getElementById(`documento-${nomeDocumento}`);
+function removeDocumentLink(documentName) {
+  const document = document.getElementById(`documento-${documentName}`);
 
-  listaDocumentos.removeChild(documento);
+  documentList.removeChild(document);
 }
 
-export { inserirLinkDocumento, removerLinkDocumento };
+export { insertDocumentLink, removeDocumentLink };

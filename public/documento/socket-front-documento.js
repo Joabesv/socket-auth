@@ -1,27 +1,27 @@
-import { alertarERedirecionar, atualizaTextoEditor } from "./documento.js";
+import { warnAndRedirect, updateTextEditor } from './document.js';
 
 const socket = io();
 
-function selecionarDocumento(nome) {
-  socket.emit("selecionar_documento", nome, (texto) => {
-    atualizaTextoEditor(texto);
+function selectDocument(name) {
+  socket.emit('document:select', name, (text) => {
+    updateTextEditor(text);
   });
 }
 
-function emitirTextoEditor(dados) {
-  socket.emit("texto_editor", dados);
+function emitTextEditor(data) {
+  socket.emit('editor:text', data);
 }
 
-socket.on("texto_editor_clientes", (texto) => {
-  atualizaTextoEditor(texto);
+socket.on('editor:text-rooms', (text) => {
+  updateTextEditor(text);
 });
 
-function emitirremoveDocument(nome) {
-  socket.emit("excluir_documento", nome);
+function emitDocumentRemove(name) {
+  socket.emit('document:remove', name);
 }
 
-socket.on("excluir_documento_sucesso", (nome) => {
-  alertarERedirecionar(nome);
+socket.on('document:remove-success', (name) => {
+  warnAndRedirect(name);
 });
 
-export { emitirTextoEditor, selecionarDocumento, emitirremoveDocument };
+export { emitTextEditor, selectDocument, emitDocumentRemove };
