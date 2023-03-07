@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 import { createServer } from 'node:http';
-import './db/dbConnect.js';
+import './database/dbConnect.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
