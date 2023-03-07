@@ -1,3 +1,4 @@
+import { encryptPassword } from '../auth/encryptPassword.js';
 import { usersCollection } from './dbConnect.js';
 /**
  * @param {Object} data
@@ -5,7 +6,8 @@ import { usersCollection } from './dbConnect.js';
  * @param {string} data.password
  */
 export async function signUpUser({ user, password }) {
-  return usersCollection.insertOne({ user, password });
+  const { hash, salt } = encryptPassword(password);
+  return usersCollection.insertOne({ user, hash, salt });
 }
 
 /**
