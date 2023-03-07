@@ -5,14 +5,16 @@ const client = new MongoClient(
 );
 
 let documentsCollection;
-
+let usersCollection;
 try {
   await client.connect();
   const db = client.db('websockets');
   documentsCollection = db.collection('documents');
+  usersCollection = db.collection('users');
+
   console.log('Conectado ao banco de dados com sucesso!');
 } catch (err) {
   console.log(err);
 }
 
-export { documentsCollection };
+export { documentsCollection, usersCollection };
